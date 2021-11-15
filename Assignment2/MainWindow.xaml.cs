@@ -17,6 +17,7 @@ namespace Assignment2
         private TextBox addFeedTextBox;
         private Button addFeedButton;
         private ComboBox selectFeedComboBox;
+
         private Button loadArticlesButton;
         private StackPanel articlePanel;
 
@@ -31,6 +32,7 @@ namespace Assignment2
 
         private void Start()
         {
+            // Added region for convenience of hiding this section
             #region Design
             // Window options
             Title = "Feed Reader";
