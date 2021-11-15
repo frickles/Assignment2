@@ -110,6 +110,7 @@ namespace Assignment2
             Grid.SetRow(loadArticlesButton, 1);
             Grid.SetColumn(loadArticlesButton, 2);
 
+            // A method for the button-click event that i made
             loadArticlesButton.Click += LoadArticles;
 
             articlePanel = new StackPanel
@@ -153,15 +154,21 @@ namespace Assignment2
         private void LoadArticles(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("This button should load 5 articles");
+
+            // We should use the current added url here to list 5 articles from it in the interface
         }
 
         // Example/testmethods
         private async void AddFeed(object sender, RoutedEventArgs e)
         {
+            // Button is disabled when it is clicked
             addFeedButton.IsEnabled = false;
             loadArticlesButton.IsEnabled = false;
 
+            // Should we use the pre-made LoadDocumentAsync-method here instead of this delay?
             await Task.Delay(3000);
+
+            // Button is active again after the delay
             addFeedButton.IsEnabled = true;
             loadArticlesButton.IsEnabled = true;
 
@@ -173,15 +180,17 @@ namespace Assignment2
             }
             else
             {
+                // Clears the container after we have clicked the button and added them to the combobox
                 addFeedTextBox.Clear();
-                // When buttons are clicked, and while articles are loading, we would want to disable the buttons
-                MessageBox.Show("This button should add the given URL to the feed.");
+                
+                MessageBox.Show("This button should add the given URL to the feed and add it to the combobox.");
+                // Maybe we should add the urls like this to this list so that we can loop them in the GUI-interface down below?
                 urls.Add(text);
                 selectFeedComboBox.Items.Add(text);
             }
         }
 
-        // We should use this method to simulate the async-time
+        // We should use this premade method to simulate the async-time
         private async Task<XDocument> LoadDocumentAsync(string url)
         {
             // This is just to simulate a slow/large data transfer and make testing easier.
