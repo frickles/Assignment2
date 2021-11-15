@@ -11,8 +11,6 @@ namespace Assignment2
 {
     public partial class MainWindow : Window
     {
-        // Just a comment to see if this works. HELLO FRIDA!
-
         private Thickness spacing = new Thickness(5);
         private HttpClient http = new HttpClient();
         // We will need these as instance variables to access in event handlers.
@@ -24,6 +22,8 @@ namespace Assignment2
 
         // Do we need this list here?
         private List<string> urls = new List<string>();
+
+        // HELLO JESSIE, THIS IS FUN!!
 
         public MainWindow()
         {
