@@ -17,7 +17,6 @@ namespace Assignment2
         private TextBox addFeedTextBox;
         private Button addFeedButton;
         private ComboBox selectFeedComboBox;
-
         private Button loadArticlesButton;
         private StackPanel articlePanel;
 
@@ -94,11 +93,15 @@ namespace Assignment2
             {
                 Margin = spacing,
                 Padding = spacing,
-                IsEditable = false
+                IsEditable = false,
             };
             grid.Children.Add(selectFeedComboBox);
             Grid.SetRow(selectFeedComboBox, 1);
             Grid.SetColumn(selectFeedComboBox, 1);
+
+            // Added this for default option with all feeds
+            selectFeedComboBox.SelectedIndex = 0;
+            selectFeedComboBox.Items.Add("All Feeds");
 
             loadArticlesButton = new Button
             {
@@ -182,7 +185,7 @@ namespace Assignment2
             {
                 // Clears the container after we have clicked the button and added them to the combobox
                 addFeedTextBox.Clear();
-                
+
                 MessageBox.Show("This button should add the given URL to the feed and add it to the combobox.");
                 // Maybe we should add the urls like this to this list so that we can loop them in the GUI-interface down below?
                 urls.Add(text);
