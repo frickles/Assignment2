@@ -1,0 +1,5 @@
+﻿https://www.theguardian.com/uk/film/rss
+https://www.cinemablend.com/rss/topic/news/movies
+https://movieweb.com/rss/all-news/
+https://www.comingsoon.net/feed
+https://screencrush.com/feed/
