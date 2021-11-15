@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
 
+// HELLO, THIS IS A BRANCH-COMMENT!
+
 namespace Assignment2
 {
     public partial class MainWindow : Window
