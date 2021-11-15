@@ -157,7 +157,7 @@ namespace Assignment2
         {
             MessageBox.Show("This button should load 5 articles");
 
-            // We should use the current added url here to list 5 articles from it in the interface
+            // We should use the current added url here to list 5 articles from it in the interface/GUI
         }
 
         // Example/testmethods
