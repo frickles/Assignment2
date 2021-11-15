@@ -14,6 +14,7 @@ namespace Assignment2
     public partial class MainWindow : Window
     {
         // Just a comment to see if this works. HELLO FRIDA!
+        // MAKING SOMETHING FOR COLLABBRANCH
 
         private Thickness spacing = new Thickness(5);
         private HttpClient http = new HttpClient();
