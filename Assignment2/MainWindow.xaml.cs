@@ -19,6 +19,8 @@ namespace Assignment2
         private ComboBox selectFeedComboBox;
         private Button loadArticlesButton;
         private StackPanel articlePanel;
+
+        // Do we need this list here?
         private List<string> urls = new List<string>();
 
         public MainWindow()
@@ -29,6 +31,7 @@ namespace Assignment2
 
         private void Start()
         {
+            #region Design
             // Window options
             Title = "Feed Reader";
             Width = 800;
@@ -115,6 +118,7 @@ namespace Assignment2
             grid.Children.Add(articlePanel);
             Grid.SetRow(articlePanel, 2);
             Grid.SetColumnSpan(articlePanel, 3);
+            #endregion
 
             // These are just placeholders.
             // Replace them with your own code that shows actual articles.
@@ -143,11 +147,13 @@ namespace Assignment2
             }
         }
 
+        // Example/testmethods
         private void LoadArticles(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("This button should load 5(?) articles");
+            MessageBox.Show("This button should load 5 articles");
         }
 
+        // Example/testmethods
         private async void AddFeed(object sender, RoutedEventArgs e)
         {
             addFeedButton.IsEnabled = false;
@@ -173,6 +179,7 @@ namespace Assignment2
             }
         }
 
+        // We should use this method to simulate the async-time
         private async Task<XDocument> LoadDocumentAsync(string url)
         {
             // This is just to simulate a slow/large data transfer and make testing easier.
