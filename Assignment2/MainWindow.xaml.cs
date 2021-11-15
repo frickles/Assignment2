@@ -9,6 +9,8 @@ using System.Xml.Linq;
 
 // HELLO, THIS IS A BRANCH-COMMENT!
 
+// THIS IS ANOTHER COMMENT IN THE NEW BRANCH!
+
 namespace Assignment2
 {
     public partial class MainWindow : Window
