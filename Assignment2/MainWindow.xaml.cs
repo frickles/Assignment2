@@ -166,7 +166,9 @@ namespace Assignment2
         private void LoadArticles(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("This button should load 5 articles");
-            // EXAMPLE FROM XML - IS THIS THE RIGHT PLACE TO PUT IT?
+
+            loadArticlesButton.IsEnabled = false;
+
             //var document = XDocument.Load("Example.xml");
 
             //// Get the title of the first movie as a string.
@@ -187,6 +189,8 @@ namespace Assignment2
             //    }
             //}
 
+            loadArticlesButton.IsEnabled = true;
+
             // We should use the current added url here to list 5 articles from it in the interface/GUI
         }
 
@@ -195,21 +199,18 @@ namespace Assignment2
         {
             // Button is disabled when it is clicked
             addFeedButton.IsEnabled = false;
-            loadArticlesButton.IsEnabled = false;
-
+            
             // Should we use the pre-made LoadDocumentAsync-method here instead of this delay?
 
             string text = addFeedTextBox.Text;
             await LoadDocumentAsync(text);
 
-            string firstTitle = LoadDocumentAsync(text).Descendants("title").First().Value;
+            //string firstTitle = LoadDocumentAsync(text).Descendants("title").First().Value;
 
 
             // Button is active again after the delay
             addFeedButton.IsEnabled = true;
-            loadArticlesButton.IsEnabled = true;
-
-
+           
 
             if (addFeedTextBox.Text == "")
             {
