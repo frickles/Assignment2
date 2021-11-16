@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,7 +16,7 @@ namespace Assignment2
     //    [Required]
     //    public string Title { get; set; }
     //    public DateTime Date { get; set; }
-    //    public string URLTitle { get; set; }
+    //    public string UrlTitle { get; set; }
 
     //}
     public partial class MainWindow : Window
@@ -31,7 +32,7 @@ namespace Assignment2
 
         // Do we need this list here?
         private List<string> urls = new List<string>();
-
+        private List<string> urlTitles = new List<string>();
         public MainWindow()
         {
             InitializeComponent();
@@ -199,18 +200,21 @@ namespace Assignment2
         {
             // Button is disabled when it is clicked
             addFeedButton.IsEnabled = false;
-            
+
             // Should we use the pre-made LoadDocumentAsync-method here instead of this delay?
 
             string text = addFeedTextBox.Text;
+
             await LoadDocumentAsync(text);
+
+
 
             //string firstTitle = LoadDocumentAsync(text).Descendants("title").First().Value;
 
 
             // Button is active again after the delay
             addFeedButton.IsEnabled = true;
-           
+
 
             if (addFeedTextBox.Text == "")
             {
@@ -221,12 +225,13 @@ namespace Assignment2
                 // Clears the container after we have clicked the button and added them to the combobox
                 addFeedTextBox.Clear();
 
-                MessageBox.Show("This button should add the given URL to the feed and add it to the combobox.");
+                //MessageBox.Show("This button should add the given URL to the feed and add it to the combobox.");
                 // Maybe we should add the urls like this to this list so that we can loop them in the GUI-interface down below?
                 urls.Add(text);
-                
-                selectFeedComboBox.Items.Add(text);
-                selectFeedComboBox.SelectedItem = text;
+                var document = XDocument.Load(text);
+                string firstTitle = document.Descendants("title").First().Value;
+                selectFeedComboBox.Items.Add(firstTitle);
+                selectFeedComboBox.SelectedItem = firstTitle;
             }
         }
 
