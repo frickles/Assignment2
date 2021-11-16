@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,6 +10,17 @@ using System.Xml.Linq;
 
 namespace Assignment2
 {
+    public class Article
+    {
+        //datum, tid, titel och namn på flödet/hemsidan.
+        //public int ID { get; set; } Do we need ID?
+        [MaxLength(255), Required]
+        public string Title { get; set; }
+        public DateTime Date { get; set; } // Time?
+        public string URLName { get; set; }
+        public List<string> urls { get; set; } // Should we have the URL:s like a list like this or as a string as above? 
+    }
+    // URL-class with Title? 
     public partial class MainWindow : Window
     {
         private Thickness spacing = new Thickness(5);
@@ -157,6 +169,26 @@ namespace Assignment2
         private void LoadArticles(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("This button should load 5 articles");
+            // EXAMPLE FROM XML - IS THIS THE RIGHT PLACE TO PUT IT?
+            //var document = XDocument.Load("Example.xml");
+
+            //// Get the title of the first movie as a string.
+            //string firstTitle = document.Descendants("title").First().Value;
+
+            //// Get all titles as an array of strings.
+            //string[] allTitles = document.Descendants("title").Select(t => t.Value).ToArray();
+
+            //// We can loop over Descendants with foreach.
+            //var eightiesTitles = new List<string>();
+            //foreach (var movie in document.Descendants("movie"))
+            //{
+            //    string title = movie.Descendants("title").First().Value;
+            //    int year = int.Parse(movie.Descendants("year").First().Value);
+            //    if (year >= 1980 && year < 1990)
+            //    {
+            //        eightiesTitles.Add(title);
+            //    }
+            //}
 
             // We should use the current added url here to list 5 articles from it in the interface/GUI
         }
@@ -169,7 +201,8 @@ namespace Assignment2
             loadArticlesButton.IsEnabled = false;
 
             // Should we use the pre-made LoadDocumentAsync-method here instead of this delay?
-            // Added this for testing the simulated delay
+
+            //await LoadDocumentAsync(string url);
             await Task.Delay(3000);
 
             // Button is active again after the delay
