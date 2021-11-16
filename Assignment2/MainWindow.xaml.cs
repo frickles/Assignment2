@@ -93,7 +93,7 @@ namespace Assignment2
             {
                 Margin = spacing,
                 Padding = spacing,
-                IsEditable = false,
+                IsEditable = false
             };
             grid.Children.Add(selectFeedComboBox);
             Grid.SetRow(selectFeedComboBox, 1);
@@ -169,6 +169,7 @@ namespace Assignment2
             loadArticlesButton.IsEnabled = false;
 
             // Should we use the pre-made LoadDocumentAsync-method here instead of this delay?
+            // Added this for testing the simulated delay
             await Task.Delay(3000);
 
             // Button is active again after the delay
