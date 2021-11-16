@@ -10,17 +10,14 @@ using System.Xml.Linq;
 
 namespace Assignment2
 {
-    public class Article
-    {
-        //datum, tid, titel och namn på flödet/hemsidan.
-        //public int ID { get; set; } Do we need ID?
-        [MaxLength(255), Required]
-        public string Title { get; set; }
-        public DateTime Date { get; set; } // Time?
-        public string URLName { get; set; }
-        public List<string> urls { get; set; } // Should we have the URL:s like a list like this or as a string as above? 
-    }
-    // URL-class with Title? 
+    //public class Article
+    //{
+    //    [Required]
+    //    public string Title { get; set; }
+    //    public DateTime Date { get; set; }
+    //    public string URLTitle { get; set; }
+
+    //}
     public partial class MainWindow : Window
     {
         private Thickness spacing = new Thickness(5);
@@ -202,14 +199,17 @@ namespace Assignment2
 
             // Should we use the pre-made LoadDocumentAsync-method here instead of this delay?
 
-            //await LoadDocumentAsync(string url);
-            await Task.Delay(3000);
+            string text = addFeedTextBox.Text;
+            await LoadDocumentAsync(text);
+
+            string firstTitle = LoadDocumentAsync(text).Descendants("title").First().Value;
+
 
             // Button is active again after the delay
             addFeedButton.IsEnabled = true;
             loadArticlesButton.IsEnabled = true;
 
-            string text = addFeedTextBox.Text;
+
 
             if (addFeedTextBox.Text == "")
             {
@@ -223,7 +223,9 @@ namespace Assignment2
                 MessageBox.Show("This button should add the given URL to the feed and add it to the combobox.");
                 // Maybe we should add the urls like this to this list so that we can loop them in the GUI-interface down below?
                 urls.Add(text);
+                
                 selectFeedComboBox.Items.Add(text);
+                selectFeedComboBox.SelectedItem = text;
             }
         }
 
