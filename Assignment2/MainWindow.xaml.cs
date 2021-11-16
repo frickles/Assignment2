@@ -102,7 +102,7 @@ namespace Assignment2
             {
                 Margin = spacing,
                 Padding = spacing,
-                IsEditable = false,
+                IsEditable = false
             };
             grid.Children.Add(selectFeedComboBox);
             Grid.SetRow(selectFeedComboBox, 1);
