@@ -11,14 +11,15 @@ using System.Xml.Linq;
 
 namespace Assignment2
 {
-    //public class Article
-    //{
-    //    [Required]
-    //    public string Title { get; set; }
-    //    public DateTime Date { get; set; }
-    //    public string UrlTitle { get; set; }
+    public class Article
+    {
+        [Required]
+        public string Title { get; set; }
+        public DateTime Date { get; set; }
+        public string UrlTitle { get; set; }
+        public List<string> urls { get; set; }
 
-    //}
+    }
     public partial class MainWindow : Window
     {
         private Thickness spacing = new Thickness(5);
@@ -31,8 +32,8 @@ namespace Assignment2
         private StackPanel articlePanel;
 
         // Do we need this list here?
-        private List<string> urls = new List<string>();
-        private List<string> urlTitles = new List<string>();
+        //private List<string> urls = new List<string>();
+        //private List<string> articles = new List<string>();
         public MainWindow()
         {
             InitializeComponent();
@@ -138,38 +139,108 @@ namespace Assignment2
 
             // These are just placeholders.
             // Replace them with your own code that shows actual articles.
-            for (int i = 0; i < 3; i++)
-            {
-                var articlePlaceholder = new StackPanel
-                {
-                    Orientation = Orientation.Vertical,
-                    Margin = spacing
-                };
-                articlePanel.Children.Add(articlePlaceholder);
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    var articlePlaceholder = new StackPanel
+            //    {
+            //        Orientation = Orientation.Vertical,
+            //        Margin = spacing
+            //    };
+            //    articlePanel.Children.Add(articlePlaceholder);
 
-                var articleTitle = new TextBlock
-                {
-                    Text = "2021-01-02 12:34 - Placeholder for an actual article title #" + (i + 1),
-                    FontWeight = FontWeights.Bold,
-                    TextTrimming = TextTrimming.CharacterEllipsis
-                };
-                articlePlaceholder.Children.Add(articleTitle);
+            //    var articleTitle = new TextBlock
+            //    {
+            //        Text = "2021-01-02 12:34 - Placeholder for an actual article title #" + (i + 1),
+            //        FontWeight = FontWeights.Bold,
+            //        TextTrimming = TextTrimming.CharacterEllipsis
+            //    };
+            //    articlePlaceholder.Children.Add(articleTitle);
 
-                var articleWebsite = new TextBlock
-                {
-                    Text = "Website name #" + (i + 1)
-                };
-                articlePlaceholder.Children.Add(articleWebsite);
-            }
+            //    var articleWebsite = new TextBlock
+            //    {
+            //        Text = "Website name #" + (i + 1)
+            //    };
+            //    articlePlaceholder.Children.Add(articleWebsite);
+            //}
         }
 
         // Example/testmethods
-        private void LoadArticles(object sender, RoutedEventArgs e)
+        private async void LoadArticles(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("This button should load 5 articles");
-
+            //MessageBox.Show("This button should load 5 articles");
             loadArticlesButton.IsEnabled = false;
+            var article = new Article(); 
+            //string text = selectFeedComboBox.SelectedIndex;
+            foreach (var url in article.urls)
+            {
+                await LoadDocumentAsync(url);
+                var document = XDocument.Load(url);
+                string[] allTitles = document.Descendants("item").Select(t => t.Value).ToArray();
 
+                //We can loop over Descendants with foreach.
+                //var articles = new List<string>();
+                foreach (var item in document.Descendants("item"))
+                {
+                    string title = item.Descendants("title").First().Value;
+                    DateTime year = DateTime.Parse(item.Descendants("pubDate").First().Value);
+                    article.Title = title;
+                    article.Date = year;
+                }
+            }
+
+
+
+
+            //LoadDocumentAsync();
+
+            if (selectFeedComboBox.SelectedIndex == 0)
+            {
+                foreach (var url in article.urls)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        var articlePlaceholder = new StackPanel
+                        {
+                            Orientation = Orientation.Vertical,
+                            Margin = spacing
+                        };
+                        articlePanel.Children.Add(articlePlaceholder);
+
+                        var articleTitle = new TextBlock
+                        {
+                            //Text = "2021-01-02 12:34 - Placeholder for an actual article title #" + (i + 1),
+                            Text = article.Title,
+                            FontWeight = FontWeights.Bold,
+                            TextTrimming = TextTrimming.CharacterEllipsis
+                        };
+                        articlePlaceholder.Children.Add(articleTitle);
+
+                        var articleWebsite = new TextBlock
+                        {
+                            Text = "Website name #" + (i + 1)
+                        };
+                        articlePlaceholder.Children.Add(articleWebsite);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vad du vill");
+            }
+
+            //var document = XDocument.Load(url.selectFeedComboBox.SelectedItem.ToString());
+            //string[] allTitles = document.Descendants("title").Select(t => t.Value).ToArray();
+
+            // We can loop over Descendants with foreach.
+
+
+            //var articles = new List<string>();
+            //        foreach (var item in document.Descendants("item"))
+            //        {
+            //            string title = item.Descendants("title").First().Value;
+            //            DateTime year = DateTime.Parse(item.Descendants("pubDate").First().Value);
+            //            articles.Add(title + " " + year);
+            //        }
             //var document = XDocument.Load("Example.xml");
 
             //// Get the title of the first movie as a string.
@@ -200,21 +271,13 @@ namespace Assignment2
         {
             // Button is disabled when it is clicked
             addFeedButton.IsEnabled = false;
-
-            // Should we use the pre-made LoadDocumentAsync-method here instead of this delay?
-
             string text = addFeedTextBox.Text;
 
             await LoadDocumentAsync(text);
-
-
-
-            //string firstTitle = LoadDocumentAsync(text).Descendants("title").First().Value;
-
-
             // Button is active again after the delay
             addFeedButton.IsEnabled = true;
-
+            ////https://www.comingsoon.net/feed
+            ////https://www.cinemablend.com/rss/topic/news/movies
 
             if (addFeedTextBox.Text == "")
             {
@@ -224,14 +287,14 @@ namespace Assignment2
             {
                 // Clears the container after we have clicked the button and added them to the combobox
                 addFeedTextBox.Clear();
-
-                //MessageBox.Show("This button should add the given URL to the feed and add it to the combobox.");
-                // Maybe we should add the urls like this to this list so that we can loop them in the GUI-interface down below?
-                urls.Add(text);
+                //(text);
                 var document = XDocument.Load(text);
                 string firstTitle = document.Descendants("title").First().Value;
                 selectFeedComboBox.Items.Add(firstTitle);
                 selectFeedComboBox.SelectedItem = firstTitle;
+
+
+
             }
         }
 
