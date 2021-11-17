@@ -11,13 +11,13 @@ using System.Xml.Linq;
 
 namespace Assignment2
 {
-    public class Article
-    {
-        [Required]
-        public string Title { get; set; }
-        public DateTime Date { get; set; }
-        public string UrlTitle { get; set; }
-    }
+    //public class Article
+    //{
+    //    [Required]
+    //    public string Title { get; set; }
+    //    public DateTime Date { get; set; }
+    //    public string UrlTitle { get; set; }
+    //}
     public partial class MainWindow : Window
     {
         private Thickness spacing = new Thickness(5);
@@ -134,13 +134,16 @@ namespace Assignment2
 
         private async void LoadArticles(object sender, RoutedEventArgs e)
         {
+            articlePanel.Children.Clear();
+
             loadArticlesButton.IsEnabled = false;
 
             if (selectFeedComboBox.SelectedIndex == 0)
             {
                 foreach (var url in urls)
                 {
-                    for (int i = 1; i < 5; i++)
+                    await LoadDocumentAsync(url);
+                    for (int i = 0; i < 5; i++)
                     {
                         var articlePlaceholder = new StackPanel
                         {
