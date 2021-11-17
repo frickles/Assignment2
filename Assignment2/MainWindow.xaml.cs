@@ -17,8 +17,6 @@ namespace Assignment2
         public string Title { get; set; }
         public DateTime Date { get; set; }
         public string UrlTitle { get; set; }
-        public List<string> urls { get; set; }
-
     }
     public partial class MainWindow : Window
     {
@@ -30,7 +28,7 @@ namespace Assignment2
         private ComboBox selectFeedComboBox;
         private Button loadArticlesButton;
         private StackPanel articlePanel;
-
+        private List<string> urls = new List<string>();
         // Do we need this list here?
         //private List<string> urls = new List<string>();
         //private List<string> articles = new List<string>();
@@ -169,69 +167,83 @@ namespace Assignment2
         {
             //MessageBox.Show("This button should load 5 articles");
             loadArticlesButton.IsEnabled = false;
-            var article = new Article(); 
+            //var article = new Article(); 
             //string text = selectFeedComboBox.SelectedIndex;
-            foreach (var url in article.urls)
+            foreach (var url in urls)
             {
                 await LoadDocumentAsync(url);
                 var document = XDocument.Load(url);
                 string[] allTitles = document.Descendants("item").Select(t => t.Value).ToArray();
-
-                //We can loop over Descendants with foreach.
-                //var articles = new List<string>();
-                foreach (var item in document.Descendants("item"))
                 {
-                    string title = item.Descendants("title").First().Value;
-                    DateTime year = DateTime.Parse(item.Descendants("pubDate").First().Value);
-                    article.Title = title;
-                    article.Date = year;
-                }
-            }
-
-
-
-
-            //LoadDocumentAsync();
-
-            if (selectFeedComboBox.SelectedIndex == 0)
-            {
-                foreach (var url in article.urls)
-                {
-                    for (int i = 0; i < 5; i++)
+                    foreach (var item in document.Descendants("item"))
                     {
-                        var articlePlaceholder = new StackPanel
+                        string title = item.Descendants("title").First().Value;
+                        DateTime year = DateTime.Parse(item.Descendants("pubDate").First().Value);
+                        Title = title;
+                        for (int i = 0; i < 5; i++)
                         {
-                            Orientation = Orientation.Vertical,
-                            Margin = spacing
-                        };
-                        articlePanel.Children.Add(articlePlaceholder);
+                            var articlePlaceholder = new StackPanel
+                            {
 
-                        var articleTitle = new TextBlock
-                        {
-                            //Text = "2021-01-02 12:34 - Placeholder for an actual article title #" + (i + 1),
-                            Text = article.Title,
-                            FontWeight = FontWeights.Bold,
-                            TextTrimming = TextTrimming.CharacterEllipsis
-                        };
-                        articlePlaceholder.Children.Add(articleTitle);
+                                Margin = spacing
+                            };
+                            articlePanel.Children.Add(articlePlaceholder);
 
-                        var articleWebsite = new TextBlock
-                        {
-                            Text = "Website name #" + (i + 1)
-                        };
-                        articlePlaceholder.Children.Add(articleWebsite);
+                            var articleTitle = new TextBlock
+                            {
+                                //Text = "2021-01-02 12:34 - Placeholder for an actual article title #" + (i + 1),
+                                Text = Title,
+
+                                FontWeight = FontWeights.Bold,
+                                TextTrimming = TextTrimming.CharacterEllipsis
+                            };
+                            articlePlaceholder.Children.Add(articleTitle);
+
+                            var articleWebsite = new TextBlock
+                            {
+                                Text = "Website name #" + (i + 1)
+                            };
+                            articlePlaceholder.Children.Add(articleWebsite);
+                        }
                     }
                 }
             }
-            else
-            {
-                MessageBox.Show("Vad du vill");
-            }
+            //LoadDocumentAsync();
 
-            //var document = XDocument.Load(url.selectFeedComboBox.SelectedItem.ToString());
-            //string[] allTitles = document.Descendants("title").Select(t => t.Value).ToArray();
+            //if (selectFeedComboBox.SelectedIndex == 0)
+            //{
+            //    foreach (var url in urls)
+            //    {
+            //        for (int i = 0; i < 5; i++)
+            //        {
+            //            var articlePlaceholder = new StackPanel
+            //            {
 
-            // We can loop over Descendants with foreach.
+            //                Margin = spacing
+            //            };
+            //            articlePanel.Children.Add(articlePlaceholder);
+
+            //            var articleTitle = new TextBlock
+            //            {
+            //                Text = "2021-01-02 12:34 - Placeholder for an actual article title #" + (i + 1),
+
+            //                FontWeight = FontWeights.Bold,
+            //                TextTrimming = TextTrimming.CharacterEllipsis
+            //            };
+            //            articlePlaceholder.Children.Add(articleTitle);
+
+            //            var articleWebsite = new TextBlock
+            //            {
+            //                Text = "Website name #" + (i + 1)
+            //            };
+            //            articlePlaceholder.Children.Add(articleWebsite);
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Vad du vill");
+            //}
 
 
             //var articles = new List<string>();
@@ -287,14 +299,12 @@ namespace Assignment2
             {
                 // Clears the container after we have clicked the button and added them to the combobox
                 addFeedTextBox.Clear();
-                //(text);
+
                 var document = XDocument.Load(text);
                 string firstTitle = document.Descendants("title").First().Value;
                 selectFeedComboBox.Items.Add(firstTitle);
                 selectFeedComboBox.SelectedItem = firstTitle;
-
-
-
+                urls.Add(text);
             }
         }
 
