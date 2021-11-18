@@ -11,13 +11,6 @@ using System.Xml.Linq;
 
 namespace Assignment2
 {
-    //public class Article
-    //{
-    //    [Required]
-    //    public string Title { get; set; }
-    //    public DateTime Date { get; set; }
-    //    public string UrlTitle { get; set; }
-    //}
     public partial class MainWindow : Window
     {
         private Thickness spacing = new Thickness(5);
@@ -135,27 +128,25 @@ namespace Assignment2
         private async void LoadArticles(object sender, RoutedEventArgs e)
         {
             articlePanel.Children.Clear();
-
             loadArticlesButton.IsEnabled = false;
 
             var tasks = urls.Select(LoadDocumentAsync).ToList();
             var load = await Task.WhenAll(tasks);
-
-            // All feeds // Working
-            if (selectFeedComboBox.SelectedIndex == 0)
+            foreach (var url in urls)
             {
-                foreach (var url in urls)
+                var document = XDocument.Load(url);
+                foreach (var item in document.Descendants("item"))
                 {
-                    var document = XDocument.Load(url);
-                    foreach (var item in document.Descendants("item"))
-                    {
-                        string title = item.Descendants("title").First().Value;
-                        DateTime date = DateTime.Parse(item.Descendants("pubDate").First().Value);
-                        string websiteTitle = document.Descendants("title").First().Value;
+                    string title = item.Descendants("title").First().Value;
+                    DateTime date = DateTime.Parse(item.Descendants("pubDate").First().Value);
+                    string websiteTitle = document.Descendants("title").First().Value;
 
+
+                    // All feeds // Working
+                    if (selectFeedComboBox.SelectedIndex == 0)
+                    {
                         for (int i = 0; i < 5; i++)
                         {
-
                             var articlePlaceholder = new StackPanel
                             {
                                 Orientation = Orientation.Vertical,
@@ -176,27 +167,22 @@ namespace Assignment2
                                 Text = websiteTitle
                             };
                             articlePlaceholder.Children.Add(articleWebsite);
-
                         }
                     }
-
-                }
-            }
-
             else
             {
                 articlePanel.Children.Clear();
-                foreach (var url in urls)
-                {
-                    await Task.WhenAll(tasks);
-                    var document = XDocument.Load(url);
-                    //string[] allTitles = document.Descendants("item").Select(t => t.Value).ToArray();
+                //foreach (var url in urls)
+                //{
+                //    await Task.WhenAll(tasks);
+                //    var document = XDocument.Load(url);
+                //    //string[] allTitles = document.Descendants("item").Select(t => t.Value).ToArray();
 
-                    foreach (var item in document.Descendants("item"))
-                    {
-                        string title = item.Descendants("title").First().Value;
-                        DateTime date = DateTime.Parse(item.Descendants("pubDate").First().Value);
-                        string websiteTitle = document.Descendants("title").First().Value;
+                //    foreach (var item in document.Descendants("item"))
+                //    {
+                //        string title = item.Descendants("title").First().Value;
+                //        DateTime date = DateTime.Parse(item.Descendants("pubDate").First().Value);
+                //        string websiteTitle = document.Descendants("title").First().Value;
 
                         for (int i = 0; i < 5; i++)
                         {
