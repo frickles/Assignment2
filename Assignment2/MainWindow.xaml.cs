@@ -141,34 +141,43 @@ namespace Assignment2
             var tasks = urls.Select(LoadDocumentAsync).ToList();
             var load = await Task.WhenAll(tasks);
 
+            // All feeds // Working
             if (selectFeedComboBox.SelectedIndex == 0)
             {
                 foreach (var url in urls)
                 {
-                    for (int i = 0; i < 5; i++)
+                    var document = XDocument.Load(url);
+                    foreach (var item in document.Descendants("item"))
                     {
+                        string title = item.Descendants("title").First().Value;
+                        DateTime date = DateTime.Parse(item.Descendants("pubDate").First().Value);
+                        string websiteTitle = document.Descendants("title").First().Value;
 
-                        var articlePlaceholder = new StackPanel
+                        for (int i = 0; i < 5; i++)
                         {
-                            Orientation = Orientation.Vertical,
-                            Margin = spacing
-                        };
-                        articlePanel.Children.Add(articlePlaceholder);
 
-                        var articleTitle = new TextBlock
-                        {
-                            Text = "2021-01-02 12:34 - Placeholder for an actual article title #" + (i + 1),
-                            FontWeight = FontWeights.Bold,
-                            TextTrimming = TextTrimming.CharacterEllipsis
-                        };
-                        articlePlaceholder.Children.Add(articleTitle);
+                            var articlePlaceholder = new StackPanel
+                            {
+                                Orientation = Orientation.Vertical,
+                                Margin = spacing
+                            };
+                            articlePanel.Children.Add(articlePlaceholder);
 
-                        var articleWebsite = new TextBlock
-                        {
-                            Text = "Website name #" + (i + 1)
-                        };
-                        articlePlaceholder.Children.Add(articleWebsite);
-                        
+                            var articleTitle = new TextBlock
+                            {
+                                Text = date + " - " + title + " #" + (i + 1),
+                                FontWeight = FontWeights.Bold,
+                                TextTrimming = TextTrimming.CharacterEllipsis
+                            };
+                            articlePlaceholder.Children.Add(articleTitle);
+
+                            var articleWebsite = new TextBlock
+                            {
+                                Text = websiteTitle
+                            };
+                            articlePlaceholder.Children.Add(articleWebsite);
+
+                        }
                     }
 
                 }
@@ -186,7 +195,8 @@ namespace Assignment2
                     foreach (var item in document.Descendants("item"))
                     {
                         string title = item.Descendants("title").First().Value;
-                        DateTime year = DateTime.Parse(item.Descendants("pubDate").First().Value);
+                        DateTime date = DateTime.Parse(item.Descendants("pubDate").First().Value);
+                        string websiteTitle = document.Descendants("title").First().Value;
 
                         for (int i = 0; i < 5; i++)
                         {
@@ -200,7 +210,7 @@ namespace Assignment2
                             var articleTitle = new TextBlock
                             {
                                 //Text = "2021-01-02 12:34 - Placeholder for an actual article title #" + (i + 1),
-                                Text = title + " #" + (i + 1),
+                                Text = date + " - " + title + " #" + (i + 1),
                                 FontWeight = FontWeights.Bold,
                                 TextTrimming = TextTrimming.CharacterEllipsis
                             };
@@ -208,7 +218,7 @@ namespace Assignment2
 
                             var articleWebsite = new TextBlock
                             {
-                                Text = selectFeedComboBox.Text
+                                Text = websiteTitle
                             };
                             articlePlaceholder.Children.Add(articleWebsite);
                         }
