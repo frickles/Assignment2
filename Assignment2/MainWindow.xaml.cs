@@ -179,7 +179,7 @@ namespace Assignment2
                 articlePanel.Children.Clear();
                 foreach (var url in urls)
                 {
-                    await LoadDocumentAsync(url);
+                    await Task.WhenAll(tasks);
                     var document = XDocument.Load(url);
                     //string[] allTitles = document.Descendants("item").Select(t => t.Value).ToArray();
 
