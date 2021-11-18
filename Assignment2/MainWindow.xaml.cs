@@ -113,7 +113,6 @@ namespace Assignment2
             Grid.SetRow(loadArticlesButton, 1);
             Grid.SetColumn(loadArticlesButton, 2);
 
-            // A method for the button-click event that i made
             loadArticlesButton.Click += LoadArticles;
 
             articlePanel = new StackPanel
@@ -167,7 +166,6 @@ namespace Assignment2
 
                 var articleTitle = new TextBlock
                 {
-                    //Text = "2021-01-02 12:34 - Placeholder for an actual article title #" + (i + 1),
                     Text = date + " - " + title,
                     FontWeight = FontWeights.Bold,
                     TextTrimming = TextTrimming.CharacterEllipsis
@@ -179,93 +177,7 @@ namespace Assignment2
                     Text = websiteTitle
                 };
                 articlePlaceholder.Children.Add(articleWebsite);
-
-
-
             }
-
-            /*
-            foreach (var url in urls)
-            {
-                var document = XDocument.Load(url);
-                foreach (var item in document.Descendants("item"))
-                {
-                    string title = item.Descendants("title").First().Value;
-                    DateTime date = DateTime.Parse(item.Descendants("pubDate").First().Value);
-                    string websiteTitle = document.Descendants("title").First().Value;
-
-
-                    // All feeds // Working
-                    if (selectFeedComboBox.SelectedIndex == 0)
-                    {
-                        for (int i = 0; i < 5; i++)
-                        {
-                            var articlePlaceholder = new StackPanel
-                            {
-                                Orientation = Orientation.Vertical,
-                                Margin = spacing
-                            };
-                            articlePanel.Children.Add(articlePlaceholder);
-
-                            var articleTitle = new TextBlock
-                            {
-                                Text = date + " - " + title + " #" + (i + 1),
-                                FontWeight = FontWeights.Bold,
-                                TextTrimming = TextTrimming.CharacterEllipsis
-                            };
-                            articlePlaceholder.Children.Add(articleTitle);
-
-                            var articleWebsite = new TextBlock
-                            {
-                                Text = websiteTitle
-                            };
-                            articlePlaceholder.Children.Add(articleWebsite);
-                        }
-                    }
-            else
-            {
-                articlePanel.Children.Clear();
-                //foreach (var url in urls)
-                //{
-                //    await Task.WhenAll(tasks);
-                //    var document = XDocument.Load(url);
-                //    //string[] allTitles = document.Descendants("item").Select(t => t.Value).ToArray();
-
-                //    foreach (var item in document.Descendants("item"))
-                //    {
-                //        string title = item.Descendants("title").First().Value;
-                //        DateTime date = DateTime.Parse(item.Descendants("pubDate").First().Value);
-                //        string websiteTitle = document.Descendants("title").First().Value;
-
-                        for (int i = 0; i < 5; i++)
-                        {
-                            var articlePlaceholder = new StackPanel
-                            {
-                                Orientation = Orientation.Vertical,
-                                Margin = spacing
-                            };
-                            articlePanel.Children.Add(articlePlaceholder);
-
-                            var articleTitle = new TextBlock
-                            {
-                                //Text = "2021-01-02 12:34 - Placeholder for an actual article title #" + (i + 1),
-                                Text = date + " - " + title + " #" + (i + 1),
-                                FontWeight = FontWeights.Bold,
-                                TextTrimming = TextTrimming.CharacterEllipsis
-                            };
-                            articlePlaceholder.Children.Add(articleTitle);
-
-                            var articleWebsite = new TextBlock
-                            {
-                                Text = websiteTitle
-                            };
-                            articlePlaceholder.Children.Add(articleWebsite);
-                        }
-
-                    }
-                }
-            }
-            */
             loadArticlesButton.IsEnabled = true;
         }
 
@@ -277,15 +189,7 @@ namespace Assignment2
             var document = await LoadDocumentAsync(url);
 
             addFeedButton.IsEnabled = true;
-            ////https://www.comingsoon.net/feed
-            ////https://www.cinemablend.com/rss/topic/news/movies
 
-            if (addFeedTextBox.Text == "")
-            {
-                MessageBox.Show("Please enter a valid URL");
-            }
-            else
-            {
                 addFeedTextBox.Clear();
 
                 string firstTitle = document.Descendants("title").First().Value;
@@ -293,7 +197,6 @@ namespace Assignment2
                 selectFeedComboBox.SelectedItem = firstTitle;
                 UrlNames.Add(firstTitle, url);
                 urls.Add(url);
-            }
         }
         private async Task<XDocument> LoadDocumentAsync(string url)
         {
