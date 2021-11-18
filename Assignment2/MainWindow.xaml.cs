@@ -22,6 +22,8 @@ namespace Assignment2
         private StackPanel articlePanel;
         private List<string> urls = new List<string>();
 
+        private Dictionary<string, string> UrlNames = new Dictionary<string, string>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -130,8 +132,59 @@ namespace Assignment2
             articlePanel.Children.Clear();
             loadArticlesButton.IsEnabled = false;
 
-            var tasks = urls.Select(LoadDocumentAsync).ToList();
-            var load = await Task.WhenAll(tasks);
+            List<Task<XDocument>> tasks = new List<Task<XDocument>>();
+            if (selectFeedComboBox.SelectedIndex == 0)
+            {
+                tasks = urls.Select(LoadDocumentAsync).ToList();
+            }
+            else
+            {
+                tasks.Add(LoadDocumentAsync(UrlNames[(string)selectFeedComboBox.SelectedItem]));
+            }
+
+            var documents = await Task.WhenAll(tasks);
+
+            var items = new List<XElement>();
+            foreach (var document in documents)
+            {
+                items.AddRange(document.Descendants("item").Take(5));
+            }
+
+            items = items.OrderByDescending(i => i.Descendants("pubDate").First().Value).ToList();
+
+            foreach (var item in items)
+            {
+                string title = item.Descendants("title").First().Value;
+                DateTime date = DateTime.Parse(item.Descendants("pubDate").First().Value);
+                string websiteTitle = item.Parent.Descendants("title").First().Value;
+
+                var articlePlaceholder = new StackPanel
+                {
+                    Orientation = Orientation.Vertical,
+                    Margin = spacing
+                };
+                articlePanel.Children.Add(articlePlaceholder);
+
+                var articleTitle = new TextBlock
+                {
+                    //Text = "2021-01-02 12:34 - Placeholder for an actual article title #" + (i + 1),
+                    Text = date + " - " + title,
+                    FontWeight = FontWeights.Bold,
+                    TextTrimming = TextTrimming.CharacterEllipsis
+                };
+                articlePlaceholder.Children.Add(articleTitle);
+
+                var articleWebsite = new TextBlock
+                {
+                    Text = websiteTitle
+                };
+                articlePlaceholder.Children.Add(articleWebsite);
+
+
+
+            }
+
+            /*
             foreach (var url in urls)
             {
                 var document = XDocument.Load(url);
@@ -212,15 +265,16 @@ namespace Assignment2
                     }
                 }
             }
+            */
             loadArticlesButton.IsEnabled = true;
         }
 
         private async void AddFeed(object sender, RoutedEventArgs e)
         {
             addFeedButton.IsEnabled = false;
-            string text = addFeedTextBox.Text;
+            string url = addFeedTextBox.Text;
 
-            await LoadDocumentAsync(text);
+            var document = await LoadDocumentAsync(url);
 
             addFeedButton.IsEnabled = true;
             ////https://www.comingsoon.net/feed
@@ -234,11 +288,11 @@ namespace Assignment2
             {
                 addFeedTextBox.Clear();
 
-                var document = XDocument.Load(text);
                 string firstTitle = document.Descendants("title").First().Value;
                 selectFeedComboBox.Items.Add(firstTitle);
                 selectFeedComboBox.SelectedItem = firstTitle;
-                urls.Add(text);
+                UrlNames.Add(firstTitle, url);
+                urls.Add(url);
             }
         }
         private async Task<XDocument> LoadDocumentAsync(string url)
