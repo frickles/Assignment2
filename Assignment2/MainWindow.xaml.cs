@@ -138,13 +138,16 @@ namespace Assignment2
 
             loadArticlesButton.IsEnabled = false;
 
+            var tasks = urls.Select(LoadDocumentAsync).ToList();
+            var load = await Task.WhenAll(tasks);
+
             if (selectFeedComboBox.SelectedIndex == 0)
             {
                 foreach (var url in urls)
                 {
-                    await LoadDocumentAsync(url);
                     for (int i = 0; i < 5; i++)
                     {
+
                         var articlePlaceholder = new StackPanel
                         {
                             Orientation = Orientation.Vertical,
@@ -165,7 +168,9 @@ namespace Assignment2
                             Text = "Website name #" + (i + 1)
                         };
                         articlePlaceholder.Children.Add(articleWebsite);
+                        
                     }
+
                 }
             }
 
